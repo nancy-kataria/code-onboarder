@@ -8,9 +8,11 @@ type AppState = "config" | "processing" | "ready";
 const Index = () => {
   const [state, setState] = useState<AppState>("config");
   const [repoUrl, setRepoUrl] = useState("");
+  const [token, setToken] = useState("");
 
-  const handleConfigSubmit = (url: string, _token: string) => {
+  const handleConfigSubmit = (url: string, accessToken: string) => {
     setRepoUrl(url);
+    setToken(accessToken);
     setState("processing");
   };
 
@@ -20,6 +22,7 @@ const Index = () => {
 
   const handleReset = () => {
     setRepoUrl("");
+    setToken("");
     setState("config");
   };
 
@@ -29,7 +32,7 @@ const Index = () => {
         <ConfigurationDashboard onSubmit={handleConfigSubmit} />
       )}
       {state === "processing" && (
-        <ProcessingState repoUrl={repoUrl} onComplete={handleProcessingComplete} />
+        <ProcessingState repoUrl={repoUrl} token={token} onComplete={handleProcessingComplete} />
       )}
       {state === "ready" && (
         <IntelligenceHub repoUrl={repoUrl} onReset={handleReset} />
